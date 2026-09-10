@@ -32,6 +32,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Jangan proses input jika game sedang pause atau player mati
+        if (Time.timeScale == 0f) return;
+        if (PlayerHealth.Instance != null && PlayerHealth.Instance.IsDead) return;
+
         HandleJump();
         HandleCombatInput();
     }
@@ -46,16 +50,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleCombatInput()
     {
-        // 1. Saat Spasi baru ditekan
-        if (Input.GetKeyDown(KeyCode.Space))
+        bool isAttackDown = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J);
+        bool isAttackHeld = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.J);
+        bool isAttackUp = Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.J);
+
+        // 1. Saat Spasi atau J baru ditekan
+        if (isAttackDown)
         {
             isHolding = true;
             holdTimer = 0f;
             skillTriggered = false;
         }
 
-        // 2. Selama Spasi ditahan
-        if (Input.GetKey(KeyCode.Space) && isHolding)
+        // 2. Selama Spasi atau J ditahan
+        if (isAttackHeld && isHolding)
         {
             holdTimer += Time.deltaTime;
 
@@ -67,8 +75,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // 3. Saat Spasi dilepas
-        if (Input.GetKeyUp(KeyCode.Space))
+        // 3. Saat Spasi atau J dilepas
+        if (isAttackUp)
         {
             // Jika dilepas sebelum durasi hold tercapai -> TEBASAN BIASA (Tap)
             if (!skillTriggered)
@@ -115,6 +123,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 enemy.TakeDamage(1);
             }
+        }
+
+        if (BossGluttony.Instance != null && BossGluttony.Instance.isBossActive)
+        {
+            BossGluttony.Instance.TakeHit();
         }
     }
 

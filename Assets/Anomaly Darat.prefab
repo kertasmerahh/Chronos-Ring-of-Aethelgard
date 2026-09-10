@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1992149003896466136}
   - component: {fileID: -1885665557020632670}
   m_Layer: 0
-  m_Name: Anomaly
+  m_Name: Anomaly Darat
   m_TagString: Anomaly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
