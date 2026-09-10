@@ -16,14 +16,14 @@ public class AnomalySpawner : MonoBehaviour
         if (timer >= jedaWaktu)
         {
             MunculkanMusuh();
-            timer = 0f;
+            timer = 0f; 
         }
     }
 
     void MunculkanMusuh()
     {
         // 1. Gandakan musuh di posisi TitikSpawn
-        GameObject musuhBaru = Instantiate(anomalyPrefab, titikSpawn.position, Quaternion.identity);
+        GameObject musuhBaru = Instantiate(anomalyPrefab, titikSpawn.position, titikSpawn.rotation);
 
         // 2. Tempelkan musuh ke tanah biar ikut berputar menghampiri player
         musuhBaru.transform.SetParent(groundTanah, true);
